@@ -58,6 +58,10 @@ FROM Students
 WHERE classroom_id = 1;
 
 
+-- ----------------------------------------------------------------------
+-- MEMBER: Classroom table (Ketia)
+-- ----------------------------------------------------------------------
+
 CREATE TABLE Classroom (
     classroom_id INT PRIMARY KEY,
     room_number VARCHAR(10),
@@ -65,22 +69,23 @@ CREATE TABLE Classroom (
     capacity INT
 );
 
--- Ketia: insert sample rows
+-- Ketia: insert sample rows (6 rows — extra spare row so DELETE doesn't break Noah's Courses FK)
 INSERT INTO Classroom (classroom_id, room_number, building, capacity) VALUES
 (1, '101', 'Main Hall', 30),
 (2, '202', 'Science Block', 25),
 (3, '303', 'Library Annex', 20),
 (4, '404', 'Main Hall', 40),
-(5, '105', 'Tech Building', 35);
+(5, '105', 'Tech Building', 35),
+(6, '106', 'Tech Building', 20);
 
 -- Ketia: update
 UPDATE Classroom
 SET capacity = 45
 WHERE classroom_id = 4;
 
--- Ketia: delete
+-- Ketia: delete (spare row 6, not referenced by any other table)
 DELETE FROM Classroom
-WHERE classroom_id = 5;
+WHERE classroom_id = 6;
 
 -- Ketia: select with where
 SELECT * FROM Classroom
