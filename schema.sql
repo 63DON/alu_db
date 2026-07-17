@@ -1,7 +1,7 @@
 -- =====================================================================
--- ALU_ Play with SQL Basics (RDBMS) Peer Group ActivityDB 
+-- ALU_ Play with SQL Basics (RDBMS) Peer Group ActivityDB
 -- Shared team file. Everyone commits their OWN section directly to git.
--- Do not squash everyone's work into one  commit per table/query.commit 
+-- Do not squash everyone's work into one  commit per table/query.commit
 -- =====================================================================
 
 -- =====================================================================
@@ -17,21 +17,49 @@ USE alu_db;
 -- ---------------------------------------------------------------------
 -- MEMBER  Gary (gkarenzi- Students tablelang) A 
 -- ---------------------------------------------------------------------
--- TODO (Gary): write your own CREATE TABLE here, matching the diagram:
---   student_id     INT           PK
---   name           VARCHAR(100)
---   email          VARCHAR(100)
---   classroom_id   INT           FK -> Classroom(classroom_id)
---   enrollment_date DATE
---
--- Then below it add:
---   - 5+ INSERT INTO Students sample rows (use student_id 1-5)
---   - 1 UPDATE statement, 1 DELETE statement  (comment: -- Gary: UPDATE / -- Gary: DELETE)
---   - 1 SELECT with a WHERE clause            (comment: -- Gary: SELECT)
+-- Depends on Classroom (Ketia) already existing.
+-- Uses student_id 1-6, referencing classroom_id 1-5 that Ketia is
+-- expected to insert.
+
+-- Gary: CREATE TABLE
+CREATE TABLE Students (
+    student_id      INT PRIMARY KEY,
+    name            VARCHAR(100) NOT NULL,
+    email           VARCHAR(100) UNIQUE,
+    classroom_id    INT,
+    enrollment_date DATE,
+    FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id)
+);
+
+-- Gary: INSERT
+INSERT INTO Students (student_id, name, email, classroom_id, enrollment_date) VALUES
+(1, 'Gary Karenzi',  'gary.karenzi@alustudent.com',   1, '2026-01-10'),
+(2, 'Ketia Mugisha', 'ketia.mugisha@alustudent.com',  2, '2026-01-10'),
+(3, 'Nicia Agasaro', 'nicia.agasaro@alustudent.com',  3, '2026-01-11'),
+(4, 'Noah Mugabo',   'noah.mugabo@alustudent.com',    4, '2026-01-11'),
+(5, 'Don Uwase',     'don.uwase@alustudent.com',      5, '2026-01-12'),
+(6, 'Alice Uwera',   'alice.uwera@alustudent.com',    1, '2026-01-12');
+
+-- Gary: UPDATE
+UPDATE Students
+SET email = 'g.karenzi@alustudent.com'
+WHERE student_id = 1;
+
+-- Gary: DELETE
+-- (student_id 6 is a "spare" row not referenced by any junction table,
+-- so deleting it doesn't break Student_Courses/Student_Activities' FK
+-- on student_id 1-5)
+DELETE FROM Students
+WHERE student_id = 6;
+
+-- Gary: SELECT
+SELECT student_id, name, email, enrollment_date
+FROM Students
+WHERE classroom_id = 1;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER  Ketia (kmugishate- Classroom tablecell) B 
+-- MEMBER  Ketia (kmugishate- Classroom tablecell) B
 -- ---------------------------------------------------------------------
 -- TODO (Ketia): write your own CREATE TABLE here, matching the diagram:
 --   classroom_id INT           PK
@@ -39,13 +67,13 @@ USE alu_db;
 --   building     VARCHAR(50)
 --   capacity     INT
 --
--- No foreign keys needed for this  build it first.table 
+-- No foreign keys needed for this  build it first.table
 -- Then below it add 5+ INSERT rows (classroom_id 1-5), 1 UPDATE, 1 DELETE,
 -- 1 SELECT with WHERE, each labeled "-- Ketia: ..."
 
 
 -- ---------------------------------------------------------------------
--- MEMBER   Faculty tableNicia C 
+-- MEMBER   Faculty tableNicia C
 -- ---------------------------------------------------------------------
 -- TODO (Nicia): write your own CREATE TABLE here, matching the diagram:
 --   faculty_id INT           PK
@@ -53,7 +81,7 @@ USE alu_db;
 --   email      VARCHAR(100)
 --   department VARCHAR(50)
 --
--- No foreign keys  build alongside Classroom.needed 
+-- No foreign keys  build alongside Classroom.needed
 -- IMPORTANT: use faculty_id 1-5, since Courses (Noah) and
 -- Extra_Curricular_Activities (Don) reference these IDs.
 -- Then add 5+ INSERT rows, 1 UPDATE, 1 DELETE, 1 SELECT with WHERE,
@@ -61,7 +89,7 @@ USE alu_db;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER   Courses tableNoah D 
+-- MEMBER   Courses tableNoah D
 -- ---------------------------------------------------------------------
 -- Depends on Faculty (Nicia) and Classroom (Ketia) already existing.
 -- Uses course_id 1-6, referencing faculty_id/classroom_id 1-5 that
@@ -104,7 +132,7 @@ WHERE credits >= 4;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER   Extra_Curricular_Activities + junction tablesDon E 
+-- MEMBER   Extra_Curricular_Activities + junction tablesDon E
 -- ---------------------------------------------------------------------
 -- Depends on Faculty, Students, and Courses already existing.
 -- Assumes faculty_id 1-5 (Faculty), student_id 1-5 (Students),
@@ -189,7 +217,7 @@ WHERE category = 'Sports';
 -- =====================================================================
 
 -- --- Normalization check (write as a group, replace this paragraph) ---
--- TODO: Discuss as a  does any table repeat data that should liveteam 
+-- TODO: Discuss as a  does any table repeat data that should liveteam
 -- elsewhere? Do the junction tables correctly avoid many-to-many
 -- duplication? Write your agreed answer here as a short paragraph.
 
