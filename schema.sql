@@ -75,17 +75,36 @@ WHERE classroom_id = 1;
 -- ---------------------------------------------------------------------
 -- MEMBER   Faculty tableNicia C
 -- ---------------------------------------------------------------------
--- TODO (Nicia): write your own CREATE TABLE here, matching the diagram:
---   faculty_id INT           PK
---   name       VARCHAR(100)
---   email      VARCHAR(100)
---   department VARCHAR(50)
---
--- No foreign keys  build alongside Classroom.needed
--- IMPORTANT: use faculty_id 1-5, since Courses (Noah) and
--- Extra_Curricular_Activities (Don) reference these IDs.
--- Then add 5+ INSERT rows, 1 UPDATE, 1 DELETE, 1 SELECT with WHERE,
--- each labeled "-- Nicia: ..."
+-- ---------------------------------------------------------------------
+-- MEMBER C: Faculty table (Nicia)
+-- ---------------------------------------------------------------------
+CREATE TABLE Faculty (
+    faculty_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    department VARCHAR(50)
+);
+
+INSERT INTO Faculty (faculty_id, name, email, department) VALUES
+(1, 'Gary Karenzi', 'gary.karenzi@alustudent.com', 'Computer Science'),
+(2, 'Ketia Mugisha', 'ketia.mugisha@alustudent.com', 'Mathematics'),
+(3, 'Nicia Agasaro', 'nicia.agasaro@alustudent.com', 'Business'),
+(4, 'Noah Mugabo', 'noah.mugabo@alustudent.com', 'Agriculture'),
+(5, 'Don Uwase', 'don.uwase@alustudent.com', 'Computer Science');
+
+UPDATE Faculty
+SET department = 'Data Science'
+WHERE faculty_id = 5;
+
+INSERT INTO Faculty (faculty_id, name, email, department) VALUES
+(6, 'Alice Uwera', 'alice.uwera@alustudent.com', 'Temp Dept');
+DELETE FROM Faculty
+WHERE faculty_id = 6;
+
+SELECT name, email
+FROM Faculty
+WHERE department = 'Computer Science';
+
 
 
 -- ---------------------------------------------------------------------
