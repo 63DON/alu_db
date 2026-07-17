@@ -1,7 +1,7 @@
 -- =====================================================================
--- ALU_DB — Play with SQL Basics (RDBMS) Peer Group Activity
+-- ALU_ Play with SQL Basics (RDBMS) Peer Group ActivityDB 
 -- Shared team file. Everyone commits their OWN section directly to git.
--- Do not squash everyone's work into one commit — commit per table/query.
+-- Do not squash everyone's work into one  commit per table/query.commit 
 -- =====================================================================
 
 -- =====================================================================
@@ -15,7 +15,7 @@ USE alu_db;
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
--- MEMBER A — Gary (gkarenzi-lang) — Students table
+-- MEMBER  Gary (gkarenzi- Students tablelang) A 
 -- ---------------------------------------------------------------------
 -- TODO (Gary): write your own CREATE TABLE here, matching the diagram:
 --   student_id     INT           PK
@@ -31,7 +31,7 @@ USE alu_db;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER B — Ketia (kmugishate-cell) — Classroom table
+-- MEMBER  Ketia (kmugishate- Classroom tablecell) B 
 -- ---------------------------------------------------------------------
 -- TODO (Ketia): write your own CREATE TABLE here, matching the diagram:
 --   classroom_id INT           PK
@@ -39,13 +39,13 @@ USE alu_db;
 --   building     VARCHAR(50)
 --   capacity     INT
 --
--- No foreign keys needed for this table — build it first.
+-- No foreign keys needed for this  build it first.table 
 -- Then below it add 5+ INSERT rows (classroom_id 1-5), 1 UPDATE, 1 DELETE,
 -- 1 SELECT with WHERE, each labeled "-- Ketia: ..."
 
 
 -- ---------------------------------------------------------------------
--- MEMBER C — Nicia — Faculty table
+-- MEMBER   Faculty tableNicia C 
 -- ---------------------------------------------------------------------
 -- TODO (Nicia): write your own CREATE TABLE here, matching the diagram:
 --   faculty_id INT           PK
@@ -53,7 +53,7 @@ USE alu_db;
 --   email      VARCHAR(100)
 --   department VARCHAR(50)
 --
--- No foreign keys needed — build alongside Classroom.
+-- No foreign keys  build alongside Classroom.needed 
 -- IMPORTANT: use faculty_id 1-5, since Courses (Noah) and
 -- Extra_Curricular_Activities (Don) reference these IDs.
 -- Then add 5+ INSERT rows, 1 UPDATE, 1 DELETE, 1 SELECT with WHERE,
@@ -61,24 +61,50 @@ USE alu_db;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER D — Noah — Courses table
+-- MEMBER   Courses tableNoah D 
 -- ---------------------------------------------------------------------
--- TODO (Noah): write your own CREATE TABLE here, matching the diagram:
---   course_id    INT           PK
---   course_name  VARCHAR(100)
---   credits      INT
---   faculty_id   INT           FK -> Faculty(faculty_id)
---   classroom_id INT           FK -> Classroom(classroom_id)
---
 -- Depends on Faculty (Nicia) and Classroom (Ketia) already existing.
--- Use course_id 1-5, and reference faculty_id/classroom_id values that
--- Nicia and Ketia actually inserted (1-5).
--- Then add 5+ INSERT rows, 1 UPDATE, 1 DELETE, 1 SELECT with WHERE,
--- each labeled "-- Noah: ..."
+-- Uses course_id 1-6, referencing faculty_id/classroom_id 1-5 that
+-- Nicia and Ketia are expected to insert.
+
+CREATE TABLE Courses (
+    course_id    INT PRIMARY KEY,
+    course_name  VARCHAR(100) NOT NULL,
+    credits      INT,
+    faculty_id   INT,
+    classroom_id INT,
+    FOREIGN KEY (faculty_id) REFERENCES Faculty(faculty_id),
+    FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id)
+);
+
+-- -- Noah: INSERT
+INSERT INTO Courses (course_id, course_name, credits, faculty_id, classroom_id) VALUES
+(1, 'Introduction to Databases',       3, 1, 1),
+(2, 'Calculus I',                      4, 2, 2),
+(3, 'Data Structures and Algorithms',  4, 3, 3),
+(4, 'Academic Writing',                2, 4, 4),
+(5, 'Physics I',                       3, 5, 5),
+(6, 'Introduction to Economics',       3, 1, 2);
+
+-- -- Noah: UPDATE
+UPDATE Courses
+SET credits = 5
+WHERE course_name = 'Data Structures and Algorithms';
+
+-- -- Noah: DELETE
+-- (course_id 6 is a "spare" row not referenced by any junction table,
+-- so deleting it doesn't break Student_Courses' FK on course_id 1-5)
+DELETE FROM Courses
+WHERE course_id = 6;
+
+-- -- Noah: SELECT
+SELECT course_name, credits
+FROM Courses
+WHERE credits >= 4;
 
 
 -- ---------------------------------------------------------------------
--- MEMBER E — Don — Extra_Curricular_Activities + junction tables
+-- MEMBER   Extra_Curricular_Activities + junction tablesDon E 
 -- ---------------------------------------------------------------------
 -- Depends on Faculty, Students, and Courses already existing.
 -- Assumes faculty_id 1-5 (Faculty), student_id 1-5 (Students),
@@ -163,7 +189,7 @@ WHERE category = 'Sports';
 -- =====================================================================
 
 -- --- Normalization check (write as a group, replace this paragraph) ---
--- TODO: Discuss as a team — does any table repeat data that should live
+-- TODO: Discuss as a  does any table repeat data that should liveteam 
 -- elsewhere? Do the junction tables correctly avoid many-to-many
 -- duplication? Write your agreed answer here as a short paragraph.
 
