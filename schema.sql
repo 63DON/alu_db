@@ -288,3 +288,14 @@ SELECT co.course_name, COUNT(sc.student_id) AS num_students
 FROM Courses co
 LEFT JOIN Student_Courses sc ON co.course_id = sc.course_id
 GROUP BY co.course_name;
+
+-- Normalization check (group answer):
+-- No table repeats data unnecessarily. Student_Courses and Student_Activities
+-- are separate junction tables that store only foreign keys (student_id +
+-- course_id / activity_id) plus relationship-specific data (enrolled_on,
+-- joined_on), correctly avoiding many-to-many duplication in the main tables.
+
+-- Join query 3: Faculty and the courses they teach
+SELECT f.name AS faculty_name, co.course_name
+FROM Courses co
+JOIN Faculty f ON co.faculty_id = f.faculty_id;
