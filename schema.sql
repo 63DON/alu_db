@@ -58,18 +58,33 @@ FROM Students
 WHERE classroom_id = 1;
 
 
--- ---------------------------------------------------------------------
--- MEMBER  Ketia (kmugishate- Classroom tablecell) B
--- ---------------------------------------------------------------------
--- TODO (Ketia): write your own CREATE TABLE here, matching the diagram:
---   classroom_id INT           PK
---   room_number  VARCHAR(10)
---   building     VARCHAR(50)
---   capacity     INT
---
--- No foreign keys needed for this  build it first.table
--- Then below it add 5+ INSERT rows (classroom_id 1-5), 1 UPDATE, 1 DELETE,
--- 1 SELECT with WHERE, each labeled "-- Ketia: ..."
+CREATE TABLE Classroom (
+    classroom_id INT PRIMARY KEY,
+    room_number VARCHAR(10),
+    building VARCHAR(50),
+    capacity INT
+);
+
+-- Ketia: insert sample rows
+INSERT INTO Classroom (classroom_id, room_number, building, capacity) VALUES
+(1, '101', 'Main Hall', 30),
+(2, '202', 'Science Block', 25),
+(3, '303', 'Library Annex', 20),
+(4, '404', 'Main Hall', 40),
+(5, '105', 'Tech Building', 35);
+
+-- Ketia: update
+UPDATE Classroom
+SET capacity = 45
+WHERE classroom_id = 4;
+
+-- Ketia: delete
+DELETE FROM Classroom
+WHERE classroom_id = 5;
+
+-- Ketia: select with where
+SELECT * FROM Classroom
+WHERE building = 'Main Hall';
 
 
 -- ---------------------------------------------------------------------
